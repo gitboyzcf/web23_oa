@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>修改商品</title>
+</head>
+
+<body>
+	<!--The content below is only a placeholder and can be replaced.-->
+
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+
+	<link rel="stylesheet" href="/css/basic.css">
+
+	<%- include("../component/header.ejs")%>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<%- include("../component/aside.ejs")%>
+
+			</div>
+			<div class="col-sm-10">
+				<ol class="breadcrumb">
+					<li class="active">商品管理
+					</li>
+					<li class="active">商品列表
+					</li>
+				</ol>
+				<div class="panel panel-default">
+
+					<div class="panel-heading">
+						修改商品
+					</div>
+					<div class="panel-body">
+						<div class="table-responsive input-form">
+							<form action="/admin/doproductedit?id=<%= product._id %>" method="post" enctype="multipart/form-data">
+								<ul>
+									<li> 商品名称: <input type="text" name="title" value="<%= product.title %>" /></li>
+
+									<li> 商品图片: <input type="file" name="pic" id="file"/></li>
+									<li><img src="<%= product.pic %>" style="width: 100px; margin-left: 65px;"  alt="" id="thumb"></li>
+									<li> 商品价格: <input type="text" name="price" value="<%= product.price %>"/></li>
+									<li> 商品邮费: <input type="text" name="postage" value="<%= product.postage %>"/></li>
+
+									<li>
+										商品描述:
+										<textarea name="description"  id="ckeditor" cols="60" rows="8"><%= product.content %></textarea>
+									</li>
+
+									<li>
+										<br />
+										<button type="submit" class="btn btn-default">提交</button>
+									</li>
+
+								</ul>
+
+							</form>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script src="/ckeditor5/ckeditor.js"></script>
+	<script>
+		ClassicEditor.create(document.querySelector("#ckeditor"));
+
+		let file = document.querySelector("#file");//获取文件input
+		let thumb = document.querySelector("#thumb");//获取图片标签
+		file.onchange = function(){
+			// 创建文件读取对象
+			let reader = new FileReader();
+			// 读取文件
+			reader.readAsDataURL(this.files[0]);
+			reader.onload = function(){
+				thumb.src = reader.result;
+			}
+		}
+	</script>
+
+</body>
+
+</html>

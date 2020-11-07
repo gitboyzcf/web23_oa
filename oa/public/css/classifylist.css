@@ -1,0 +1,14 @@
+ul,li,ol,li{
+    list-style: none;
+}
+.classifylist .dropdown-menu{
+    position: relative;
+    width: 100%;
+}
+.classifylist .contentInfo thead th{
+    text-align: center;
+}
+.classifylist .contentInfo tbody td{
+    vertical-align: middle;
+    text-align: center;
+}

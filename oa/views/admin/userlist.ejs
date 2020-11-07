@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>用户列表</title>
+</head>
+
+<body>
+	<!--The content below is only a placeholder and can be replaced.-->
+
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="/css/basic.css">
+	<script src="/bootstrap/js/jquery-1.10.1.js"></script>
+	<script src="/bootstrap/js/bootstrap.js"></script>
+
+	<%- include("./component/header.ejs")%>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-2">
+				<%- include("./component/aside.ejs")%>
+
+			</div>
+			<div class="col-sm-10">
+				<ol class="breadcrumb">
+					<li class="active">用户管理
+					</li>
+					<li class="active">用户列表
+					</li>
+				</ol>
+				<div class="alert alert-warning alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<strong>警告!</strong> 请谨慎操作&emsp;&emsp;注:非管理员不能删除，非登录用户本身不能修改！
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						搜索
+					</div>
+					<div class="panel-body">
+						<form role="form" class="form-inline" action="/admin/searchuser?page=<%=page%>">
+							<div class="form-group">
+								<label for="name">名称</label>
+								<input type="text" name="username" class="form-control" id="name" placeholder="请输入名称">
+							</div>
+
+							<div class="form-group">
+								<button type="submit" class="btn btn-default">开始搜索</button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--
+                列表展示
+            -->
+				<div class="table-responsive">
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>编号</th>
+								<th>姓名</th>
+								<th>年龄</th>
+								<th>性别</th>
+								<th>地址</th>
+
+								<th class="text-center">操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%for(var i=0;i<userlists.length;i++){%>
+							<tr>
+								<td><%=i+1%></td>
+								<td><%=userlists[i].username%></td>
+								<td><%=userlists[i].age%></td>
+								<td><%=userlists[i].sex%></td>
+								<td><%=userlists[i].address%></td>
+
+								<td class="text-center">
+									<a href="/admin/edituser?id=<%=userlists[i]._id%>" class="btn btn-primary">修改</a>
+									<a href="javascript:;" class="btn btn-danger delete" data-toggle="modal"
+										data-target="#myModal" data-id="<%=userlists[i]._id%>">删除</a>
+								</td>
+							</tr>
+							<%}%>
+
+
+						</tbody>
+					</table>
+					<div>
+						<ul class="pagination">
+							<li><a href="">总共<span><%=total%></span>条数据</a></li>
+							<li><a href="/admin/userlist?page=1">首页</a></li>
+							<li class="<%=page==1?'disabled':''%>"><a href="/admin/userlist?page=<%=page-1%>">上一页</a>
+							</li>
+
+							<%for(var i=1;i<=totalPage;i++){%>
+							<li class="<%=page==i?'active':''%>"><a href="/admin/userlist?page=<%=i%>"><%=i%></a></li>
+							<%}%>
+							<li class="<%=page==totalPage?'disabled':''%>"><a
+								href="/admin/userlist?page=<%=page=page<totalPage?page+1:totalPage%>">下一页</a></li>
+							<li><a href="/admin/userlist?page=<%=totalPage%>">尾页</a></li>
+							</ul>
+
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	</div>
+
+	<!-- 点击删除模态框 -->
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form action="/admin/deleteuser" method="post">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+								aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">提示</h4>
+					</div>
+					<div class="modal-body">
+						您确定要删除吗？
+						<input type="hidden" name="id" id="userId">
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-default">忍痛删除</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(".delete").on("click", function () {
+			console.log($(this).attr("data-id"));
+			$("#userId").val($(this).attr("data-id"))
+		})
+	</script>
+
+
+</body>
+
+</html>
